@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using BYO.Model;
 using BYO.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace BYO.Controllers
 {
@@ -27,21 +22,18 @@ namespace BYO.Controllers
         [Route("upload")]
         public async Task<IActionResult> PostFile(IFormFile file)
         {
-
             if (file.Length > 0)
             {
-                var filePath = Path.GetTempFileName();
-
-                using (FileStream stream = new FileStream(filePath, FileMode.Create))
+                try
                 {
-                    await file.CopyToAsync(stream);
+                    var salaryDetail = await _salaryService.GetSalaryDetails(file);
+                    return Ok(new { salaryDetail });
+                }
+                catch (Exception)
+                {
+                    //Shot // Lof // throw
                 }
 
-                var jsonInput = await System.IO.File.ReadAllTextAsync(filePath);
-
-                var input = JsonConvert.DeserializeObject<List<InputModel>>(jsonInput);
-                var salaryDetail = _salaryService.GetSalaryDetails(input);
-                return Ok(new { salaryDetail });
             }
             return BadRequest();
         }

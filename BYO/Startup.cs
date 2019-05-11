@@ -29,6 +29,7 @@ namespace BYO
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IConfigService, ConfigService>();
+            services.AddScoped<IFileReaderService, FileReaderService>();
             services.AddScoped<ISalaryService, SalaryService>();
             services.AddSwaggerGen(config =>
             {

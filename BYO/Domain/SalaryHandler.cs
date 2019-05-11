@@ -13,20 +13,20 @@ namespace BYO.Domain
         decimal Taxbase { get; set; }
         decimal TaxRate { get; set; }
     }
-    public abstract class SalaryHandler : SalaryRate
+    public abstract class SalaryRateHandlerBase : SalaryRate
     {
-        protected SalaryHandler _nextHandler;
+        protected SalaryRateHandlerBase _nextHandler;
         public abstract decimal LowerSalary { get; set; }
         public abstract decimal UpperSalary { get; set; }
         public abstract decimal Taxbase { get; set; }
         public abstract decimal TaxRate { get; set; }
-        public void SetNextHandler(SalaryHandler nextHandler)
+        public void SetNextHandler(SalaryRateHandlerBase nextHandler)
         {
             _nextHandler = nextHandler;
         }
         public OutputModel CalculateSalary(InputModel input)
         {
-            if (input.AnnualSalary > LowerSalary && input.AnnualSalary <= UpperSalary)
+            if (input.AnnualSalary > LowerSalary && (UpperSalary==0 || input.AnnualSalary <= UpperSalary ))
             {
                 var grossIncome = input.AnnualSalary / 12;
                 var incometax = (Taxbase + (input.AnnualSalary - LowerSalary) * (TaxRate / 100))/12;
@@ -41,15 +41,15 @@ namespace BYO.Domain
                 return _nextHandler.CalculateSalary(input);
         }
     }
-    public class Salary : SalaryHandler
+    public class SalaryRateHandler : SalaryRateHandlerBase
     {
         public override decimal LowerSalary { get ; set; }
-        public override decimal UpperSalary { get; set; }
+        public override decimal UpperSalary { get; set; } = 0;
         public override decimal Taxbase { get; set; }
         public override decimal TaxRate { get; set; }
     }
-    public class SalaryRates
+    public class SalaryRateHandlers
     {
-        public List<Salary> SalaryRate { get; set; }
+        public List<SalaryRateHandler> SalaryRateHandlerList { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BYO.Domain;
 using BYO.Model;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,26 +10,43 @@ namespace BYO.Service
 {
     public interface ISalaryService
     {
-        List<OutputModel> GetSalaryDetails(List<InputModel> input);
+        Task<List<OutputModel>> GetSalaryDetails(IFormFile file);
     }
     public class SalaryService : ISalaryService
     {
         private readonly IConfigService _configService;
-        public SalaryService(IConfigService configService)
+        IFileReaderService _fileReaderService;
+        public SalaryService(IConfigService configService,IFileReaderService fileReaderService)
         {
             _configService = configService;
+            _fileReaderService = fileReaderService;
         }
-        public List<OutputModel> GetSalaryDetails(List<InputModel> inputs)
+        public async Task<List<OutputModel>> GetSalaryDetails(IFormFile file)
         {
-            var salaryRates = _configService.GetSection<SalaryRates>(nameof(SalaryRates));
-            for(int i=0;i< salaryRates.SalaryRate.Count-1; i++)
+            List<OutputModel> salaryData = null;
+            if (file == null || file.Length == 0) return salaryData;
+            try
             {
-                salaryRates.SalaryRate[i].SetNextHandler(salaryRates.SalaryRate[i + 1]);
+                salaryData = await GetSalaryData(file);
+            }
+            catch (Exception)
+            {
+                //Shot // Log // Throw
+            }
+            return salaryData;
+        }
+        async Task<List<OutputModel>> GetSalaryData(IFormFile file)
+        {
+            var inputs = await _fileReaderService.ReadInput(file);
+            var salaryRates = _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
+            for (int i = 0; i < salaryRates.SalaryRateHandlerList.Count - 1; i++)
+            {
+                salaryRates.SalaryRateHandlerList[i].SetNextHandler(salaryRates.SalaryRateHandlerList[i + 1]);
             }
             var ops = new List<OutputModel>();
             foreach (var input in inputs)
             {
-                ops.Add(salaryRates.SalaryRate[0].CalculateSalary(input));
+                ops.Add(salaryRates.SalaryRateHandlerList[0].CalculateSalary(input));
             }
             return ops;
         }

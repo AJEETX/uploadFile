@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,35 +11,32 @@ namespace BYO.Model
     public class InputModel
     {
         [Required]
-        [DisplayName("First Name")]
+        [JsonProperty("first name")]
         public string FirstName { get; set; }
         [Required]
-        [DisplayName("Last Name")]
+        [JsonProperty("last name")]
         public string LastName { get; set; }
         [Required]
-        [DisplayName("Annual Salary")]
+        [JsonProperty("annual salary")]
         public decimal AnnualSalary { get; set; }
         [Required]
-        [DisplayName("Super Rate")]
+        [JsonProperty("super rate")]
         public decimal SuperRate { get; set; }
         [Required]
-        [DisplayName("Payment Start Date")]
+        [JsonProperty("payment start date")]
         public string PaymentStartDate { get; set; }
     }
     public class OutputModel
     {
-        [DisplayName("Name")]
         public string Name { get; set; }
-        [Required]
-        [DisplayName("Pay Period")]
+        [JsonProperty("pay period")]
         public string PayPeriod{ get; set; }
-        [DisplayName("Gross Income")]
+        [JsonProperty("gross income")]
         public decimal GrossIncome { get; set; }
-        [DisplayName("Incometax")]
+        [JsonProperty("income tax")]
         public decimal Incometax { get; set; }
-        [DisplayName("Net Income")]
+        [JsonProperty("net income")]
         public decimal NetIncome { get; set; }
-        [DisplayName("Super")]
         public decimal Super { get; set; }
     }
 }
