@@ -32,8 +32,9 @@ namespace BYO.Domain
                 var incometax = (Taxbase + (input.AnnualSalary - LowerSalary) * (TaxRate / 100))/12;
 
                 return new OutputModel { Name=input.FirstName+ " "+input.LastName,
-                     PayPeriod=input.PaymentStartDate, GrossIncome= grossIncome,
-                     Incometax=incometax, NetIncome= grossIncome-incometax,Super= grossIncome*(9/100)
+                     PayPeriod=input.PaymentStartDate, GrossIncome=Math.Round(grossIncome,0),
+                     Incometax=Math.Round(incometax,0), NetIncome=Math.Round(grossIncome-incometax,0),
+                    Super =Math.Round( grossIncome*(input.SuperRate/100))
                 };
             }
             else
