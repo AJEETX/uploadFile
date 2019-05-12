@@ -50,6 +50,6 @@ namespace BYO.Domain
     }
     public class SalaryRateHandlers
     {
-        public List<SalaryRateHandler> SalaryRateHandlerList { get; set; }
+        public IEnumerable<SalaryRateHandler> SalaryRateHandlerList { get; set; }
     }
 }

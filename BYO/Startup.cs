@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BYO.Domain;
 using BYO.Helper;
 using BYO.Service;
 using Microsoft.AspNetCore.Builder;
@@ -29,6 +30,7 @@ namespace BYO
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IConfigService, ConfigService>();
+            services.AddScoped<ISalaryRateHandlersSetup, SalaryRateHandlersSetup>();
             services.AddScoped<IFileReaderService, FileReaderService>();
             services.AddScoped<ISalaryService, SalaryService>();
             services.AddSwaggerGen(config =>

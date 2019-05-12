@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BYO.Service
@@ -42,6 +41,7 @@ namespace BYO.Service
             var jsonInput = await System.IO.File.ReadAllTextAsync(filePath);
 
             var input = JsonConvert.DeserializeObject<List<InputModel>>(jsonInput);
+
             return input;
         }
     }
