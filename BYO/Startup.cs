@@ -35,7 +35,7 @@ namespace BYO
             services.AddScoped<ISalaryCalculatorService, SalaryCalculatorService>();
             services.AddSwaggerGen(config =>
             {
-                config.SwaggerDoc("v1", new Info { Title = "My API", Version = "V1" });
+                config.SwaggerDoc("v1", new Info { Title = "Azy API", Version = "V1" });
                 config.OperationFilter<FileOperation>();
             });
 
@@ -60,7 +60,7 @@ namespace BYO
             app.UseSwagger();
             app.UseSwaggerUI(config =>
             {
-                config.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1");
+                config.SwaggerEndpoint("/swagger/v1/swagger.json", "Azy API");
             });
         }
     }
