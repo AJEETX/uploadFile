@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using BYO.Model;
 using BYO.Service;
@@ -19,7 +18,7 @@ namespace BYO.Controllers
 
         /// Action to post json
         /// </summary>
-        /// <param name="fijsonle"></param>
+        /// <param name="json"></param>
         [HttpPost]
         public IActionResult Post(IEnumerable<InputModel> json)
         {

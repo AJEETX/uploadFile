@@ -11,7 +11,7 @@ namespace BYO.Domain
     {
         IConfigService _configService;
         static bool IsSalaryRatehandlerSet { get; set; } = false;
-        SalaryRateHandler rateHandler = null;
+        static SalaryRateHandler rateHandler = null;
         public SalaryRateHandlersSetup(IConfigService configService)
         {
             _configService = configService;
@@ -32,22 +32,19 @@ namespace BYO.Domain
                         //Shout // Log //throw;
                     }
                 }
-                   
                 return rateHandler;
             }
 
         }
         SalaryRateHandler Setup(SalaryRateHandlers rateHandlers)
         {
-            SalaryRateHandlers tmpSalaryRatehandlers = rateHandlers;
+            for (int i = 0; i < rateHandlers.SalaryRateHandlerList.Count() - 1; i++)
 
-            for (int i = 0; i < tmpSalaryRatehandlers.SalaryRateHandlerList.Count() - 1; i++)
-
-                tmpSalaryRatehandlers.SalaryRateHandlerList.ElementAt(i).SetNextHandler(tmpSalaryRatehandlers.SalaryRateHandlerList.ElementAt(i+1));
+                rateHandlers.SalaryRateHandlerList.ElementAt(i).SetNextHandler(rateHandlers.SalaryRateHandlerList.ElementAt(i+1));
 
             IsSalaryRatehandlerSet = true;
 
-            return tmpSalaryRatehandlers.SalaryRateHandlerList.First();
+            return rateHandlers.SalaryRateHandlerList.First();
         }
     }
 }
