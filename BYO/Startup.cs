@@ -30,7 +30,7 @@ namespace BYO
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IConfigService, ConfigService>();
-            services.AddScoped<ISalaryRateHandlersSetup, SalaryRateHandlersSetup>();
+            services.AddScoped<ISalaryRateHandlersService, SalaryRateHandlersService>();
             services.AddScoped<ISalaryService, SalaryService>();
             services.AddScoped<ISalaryCalculatorService, SalaryCalculatorService>();
             services.AddSwaggerGen(config =>

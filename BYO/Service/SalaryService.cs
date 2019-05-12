@@ -1,5 +1,4 @@
-﻿using BYO.Domain;
-using BYO.Model;
+﻿using BYO.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,11 +10,11 @@ namespace BYO.Service
     }
     public class SalaryService : ISalaryService
     {
-        ISalaryRateHandlersSetup _salaryRateHandlersSetup;
+        ISalaryRateHandlersService _salaryRateHandlersService;
         ISalaryCalculatorService _salaryCalculatorService;
-        public SalaryService(ISalaryRateHandlersSetup salaryRateHandlersSetup, ISalaryCalculatorService salaryCalculatorService)
+        public SalaryService(ISalaryRateHandlersService salaryRateHandlersService, ISalaryCalculatorService salaryCalculatorService)
         {
-            _salaryRateHandlersSetup = salaryRateHandlersSetup;
+            _salaryRateHandlersService = salaryRateHandlersService;
             _salaryCalculatorService = salaryCalculatorService;
         }
 
@@ -25,7 +24,7 @@ namespace BYO.Service
             if (inputs == null || inputs.Count()==0) return salaryData;
             try
             {
-                var salaryRateHandler = _salaryRateHandlersSetup.SalaryRateHandler;
+                var salaryRateHandler = _salaryRateHandlersService.SalaryRateHandler;
 
                 if (salaryRateHandler == null) return salaryData;
 

@@ -30,7 +30,6 @@ namespace BYO.Service
             {
                 // Yell    Log    Catch  Throw     
             }
-
             return section;
         }
     }
