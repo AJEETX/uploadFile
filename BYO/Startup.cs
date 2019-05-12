@@ -31,8 +31,8 @@ namespace BYO
         {
             services.AddScoped<IConfigService, ConfigService>();
             services.AddScoped<ISalaryRateHandlersSetup, SalaryRateHandlersSetup>();
-            services.AddScoped<IFileReaderService, FileReaderService>();
             services.AddScoped<ISalaryService, SalaryService>();
+            services.AddScoped<ISalaryCalculatorService, SalaryCalculatorService>();
             services.AddSwaggerGen(config =>
             {
                 config.SwaggerDoc("v1", new Info { Title = "My API", Version = "V1" });

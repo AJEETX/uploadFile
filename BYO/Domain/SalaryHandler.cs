@@ -1,14 +1,13 @@
 ﻿using BYO.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BYO.Domain
 {
     public interface SalaryRate
     {
-        decimal LowerSalary { get; set; }
+        decimal LowerSalary { get;set; }
         decimal UpperSalary { get; set; }
         decimal Taxbase { get; set; }
         decimal TaxRate { get; set; }
@@ -32,10 +31,9 @@ namespace BYO.Domain
                 var grossIncome = input.AnnualSalary / 12;
                 var incometax = (Taxbase + (input.AnnualSalary - LowerSalary) * (TaxRate / 100))/12;
 
-                return new OutputModel { Name=input.FirstName+ " "+input.LastName,
-                     PayPeriod=input.PaymentStartDate, GrossIncome=Math.Round(grossIncome,0),
-                     Incometax=Math.Round(incometax,0), NetIncome=Math.Round(grossIncome-incometax,0),
-                    Super =Math.Round( grossIncome*(input.SuperRate/100))
+                return new OutputModel {
+                    Name =input.FirstName+ " "+input.LastName, PayPeriod=input.PaymentStartDate, GrossIncome=Math.Round(grossIncome,0),
+                     Incometax=Math.Round(incometax,0), NetIncome=Math.Round(grossIncome-incometax,0), Super =Math.Round( grossIncome*(input.SuperRate/100))
                 };
             }
             else
