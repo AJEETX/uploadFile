@@ -11,8 +11,7 @@ namespace BYO.Domain
     {
         IConfigService _configService;
         static bool IsSalaryRatehandlerSet { get; set; } = false;
-        SalaryRateHandlers  rateHandlers => _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
-        static SalaryRateHandler rateHandler = null;
+        SalaryRateHandler rateHandler = null;
         public SalaryRateHandlersSetup(IConfigService configService)
         {
             _configService = configService;
@@ -25,7 +24,8 @@ namespace BYO.Domain
                 {
                     try
                     {
-                        rateHandler = Setup();
+                        var handlers = _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
+                        rateHandler = Setup(handlers); 
                     }
                     catch
                     {
@@ -37,7 +37,7 @@ namespace BYO.Domain
             }
 
         }
-        SalaryRateHandler Setup()
+        SalaryRateHandler Setup(SalaryRateHandlers rateHandlers)
         {
             SalaryRateHandlers tmpSalaryRatehandlers = rateHandlers;
 
