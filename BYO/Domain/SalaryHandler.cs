@@ -49,6 +49,5 @@ namespace BYO.Domain
     public class SalaryRateHandlers
     {
         public IList<SalaryRateHandler> SalaryRateHandlerList { get; set; }
-        public bool IsSalaryRatehandlerSet { get; set; }
     }
 }

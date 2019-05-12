@@ -10,7 +10,9 @@ namespace BYO.Domain
     public class SalaryRateHandlersSetup : ISalaryRateHandlersSetup
     {
         IConfigService _configService;
-        SalaryRateHandlers rateHandlers => _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
+        static bool IsSalaryRatehandlerSet { get; set; } = false;
+        SalaryRateHandlers  rateHandlers => _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
+        static SalaryRateHandler rateHandler = null;
         public SalaryRateHandlersSetup(IConfigService configService)
         {
             _configService = configService;
@@ -19,8 +21,7 @@ namespace BYO.Domain
         {
             get
             {
-                SalaryRateHandler rateHandler = null;
-                if (!rateHandlers.IsSalaryRatehandlerSet)
+                if (!IsSalaryRatehandlerSet)
                 {
                     try
                     {
@@ -44,7 +45,7 @@ namespace BYO.Domain
 
                 tmpSalaryRatehandlers.SalaryRateHandlerList.ElementAt(i).SetNextHandler(tmpSalaryRatehandlers.SalaryRateHandlerList.ElementAt(i+1));
 
-            rateHandlers.IsSalaryRatehandlerSet = true;
+            IsSalaryRatehandlerSet = true;
 
             return tmpSalaryRatehandlers.SalaryRateHandlerList.First();
         }
