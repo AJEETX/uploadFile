@@ -31,7 +31,7 @@ namespace BYO.Service
 
                 salaryData = _salaryCalculatorService.CalculateSalary(inputs, salaryRateHandler);
             }
-            catch (System.Exception)
+            catch
             {
                 //shout // Log
             }

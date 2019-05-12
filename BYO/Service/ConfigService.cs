@@ -26,7 +26,7 @@ namespace BYO.Service
                 section = Activator.CreateInstance(typeof(T)) as T;
                 _configuration.GetSection(sectionName).Bind(section);
             }
-            catch (Exception)
+            catch
             {
                 // Yell    Log    Catch  Throw     
             }

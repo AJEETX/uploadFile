@@ -30,7 +30,7 @@ namespace BYO.Controllers
                     var salaryDetail = _salaryService.GetSalaryDetails(json);
                     return Ok(new { salaryDetail });
                 }
-                catch (Exception)
+                catch
                 {
                     //Shot // Lof // throw
                 }

@@ -1,9 +1,6 @@
 ﻿using BYO.Domain;
 using BYO.Model;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BYO.Service
 {
@@ -18,6 +15,7 @@ namespace BYO.Service
             foreach (var input in inputs)
             {
                 var output = salaryRate.CalculateSalary(input);
+                if(output.IsCompleted)
                 yield return output.Result;
             }
         }

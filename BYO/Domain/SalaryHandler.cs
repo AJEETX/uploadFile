@@ -5,14 +5,7 @@ using System.Threading.Tasks;
 
 namespace BYO.Domain
 {
-    public interface SalaryRate
-    {
-        decimal LowerSalary { get;set; }
-        decimal UpperSalary { get; set; }
-        decimal Taxbase { get; set; }
-        decimal TaxRate { get; set; }
-    }
-    public abstract class SalaryRateHandlerBase : SalaryRate
+    public abstract class SalaryRateHandlerBase
     {
         protected SalaryRateHandlerBase _nextHandler;
         public abstract decimal LowerSalary { get; set; }
@@ -23,10 +16,11 @@ namespace BYO.Domain
         {
             _nextHandler = nextHandler;
         }
-        public async Task< OutputModel> CalculateSalary(InputModel input)
+        public async Task<OutputModel> CalculateSalary(InputModel input)
         {
             if (input == null || input.AnnualSalary==0) return null;
-            if (input.AnnualSalary > LowerSalary && (UpperSalary==0 || input.AnnualSalary <= UpperSalary ))
+
+            if (input.AnnualSalary > LowerSalary && (input.AnnualSalary <= UpperSalary ))
             {
                 var grossIncome = input.AnnualSalary / 12;
                 var incometax = (Taxbase + (input.AnnualSalary - LowerSalary) * (TaxRate / 100))/12;
@@ -36,19 +30,25 @@ namespace BYO.Domain
                      Incometax=Math.Round(incometax,0), NetIncome=Math.Round(grossIncome-incometax,0), Super =Math.Round( grossIncome*(input.SuperRate/100))
                 };
             }
-            else
+            else if(_nextHandler!=null)
+
                 return await _nextHandler.CalculateSalary(input);
+            else
+            {
+                return  null;
+            }
         }
     }
     public class SalaryRateHandler : SalaryRateHandlerBase
     {
         public override decimal LowerSalary { get ; set; }
-        public override decimal UpperSalary { get; set; } = 0;
+        public override decimal UpperSalary { get; set; }
         public override decimal Taxbase { get; set; }
         public override decimal TaxRate { get; set; }
     }
     public class SalaryRateHandlers
     {
-        public IEnumerable<SalaryRateHandler> SalaryRateHandlerList { get; set; }
+        public IList<SalaryRateHandler> SalaryRateHandlerList { get; set; }
+        public bool IsSalaryRatehandlerSet { get; set; }
     }
 }

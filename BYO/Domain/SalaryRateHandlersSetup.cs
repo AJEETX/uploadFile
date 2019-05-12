@@ -10,7 +10,7 @@ namespace BYO.Domain
     public class SalaryRateHandlersSetup : ISalaryRateHandlersSetup
     {
         IConfigService _configService;
-        static SalaryRateHandler rateHandlers = null;
+        SalaryRateHandlers rateHandlers => _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
         public SalaryRateHandlersSetup(IConfigService configService)
         {
             _configService = configService;
@@ -19,28 +19,34 @@ namespace BYO.Domain
         {
             get
             {
-                if(rateHandlers==null)
+                SalaryRateHandler rateHandler = null;
+                if (!rateHandlers.IsSalaryRatehandlerSet)
+                {
                     try
                     {
-                        rateHandlers = Setup();
+                        rateHandler = Setup();
                     }
                     catch
                     {
                         //Shout // Log //throw;
                     }
-                return rateHandlers;
+                }
+                   
+                return rateHandler;
             }
 
         }
         SalaryRateHandler Setup()
         {
-            var salaryRates = _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
+            SalaryRateHandlers tmpSalaryRatehandlers = rateHandlers;
 
-            for (int i = 0; i < salaryRates.SalaryRateHandlerList.Count() - 1; i++)
+            for (int i = 0; i < tmpSalaryRatehandlers.SalaryRateHandlerList.Count() - 1; i++)
 
-                salaryRates.SalaryRateHandlerList.ElementAt(i).SetNextHandler(salaryRates.SalaryRateHandlerList.ElementAt(i + 1));
+                tmpSalaryRatehandlers.SalaryRateHandlerList.ElementAt(i).SetNextHandler(tmpSalaryRatehandlers.SalaryRateHandlerList.ElementAt(i+1));
 
-            return salaryRates.SalaryRateHandlerList.First();
+            rateHandlers.IsSalaryRatehandlerSet = true;
+
+            return tmpSalaryRatehandlers.SalaryRateHandlerList.First();
         }
     }
 }
