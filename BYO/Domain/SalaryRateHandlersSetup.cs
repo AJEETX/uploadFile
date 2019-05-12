@@ -1,15 +1,11 @@
 ﻿using BYO.Service;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace BYO.Domain
 {
     public interface ISalaryRateHandlersSetup
     {
-        SalaryRateHandlers SetupChain();
+        SalaryRateHandler SetupChain();
     }
     public class SalaryRateHandlersSetup : ISalaryRateHandlersSetup
     {
@@ -18,12 +14,12 @@ namespace BYO.Domain
         {
             _configService = configService;
         }
-        public SalaryRateHandlers SetupChain()
+        public SalaryRateHandler SetupChain()
         {
-            SalaryRateHandlers rateHandlers = null;
+            SalaryRateHandler rateHandlers = null;
             try
             {
-                rateHandlers = Chain();
+                rateHandlers = Setup();
             }
             catch
             {
@@ -31,14 +27,14 @@ namespace BYO.Domain
             }
             return rateHandlers;
         }
-        SalaryRateHandlers Chain()
+        SalaryRateHandler Setup()
         {
             var salaryRates = _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
             for (int i = 0; i < salaryRates.SalaryRateHandlerList.Count() - 1; i++)
 
                 salaryRates.SalaryRateHandlerList.ElementAt(i).SetNextHandler(salaryRates.SalaryRateHandlerList.ElementAt(i + 1));
 
-            return salaryRates;
+            return salaryRates.SalaryRateHandlerList.First();
         }
     }
 }

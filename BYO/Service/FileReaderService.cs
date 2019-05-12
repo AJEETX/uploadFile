@@ -10,13 +10,13 @@ namespace BYO.Service
 {
     public interface IFileReaderService
     {
-        Task<List<InputModel>> ReadInput(IFormFile file);
+        Task<IEnumerable<InputModel>> ReadInput(IFormFile file);
     }
     public class FileReaderService : IFileReaderService
     {
-        public async Task<List<InputModel>> ReadInput(IFormFile file)
+        public async Task<IEnumerable<InputModel>> ReadInput(IFormFile file)
         {
-            List<InputModel> inputData = null;
+            IEnumerable<InputModel> inputData = null;
             if (file == null) return inputData;
             try
             {
@@ -29,7 +29,7 @@ namespace BYO.Service
 
             return inputData;
         }
-        async Task<List<InputModel>> Read(IFormFile file)
+        async Task<IEnumerable<InputModel>> Read(IFormFile file)
         {
             var filePath = Path.GetTempFileName();
 
@@ -38,11 +38,9 @@ namespace BYO.Service
                 await file.CopyToAsync(stream);
             }
 
-            var jsonInput = await System.IO.File.ReadAllTextAsync(filePath);
+            var jsonInput = await File.ReadAllTextAsync(filePath);
 
-            var input = JsonConvert.DeserializeObject<List<InputModel>>(jsonInput);
-
-            return input;
+            return JsonConvert.DeserializeObject<IEnumerable<InputModel>>(jsonInput);
         }
     }
 }

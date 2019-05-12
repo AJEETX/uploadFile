@@ -24,8 +24,9 @@ namespace BYO.Domain
         {
             _nextHandler = nextHandler;
         }
-        public OutputModel CalculateSalary(InputModel input)
+        public async Task< OutputModel> CalculateSalary(InputModel input)
         {
+            if (input == null || input.AnnualSalary==0) return null;
             if (input.AnnualSalary > LowerSalary && (UpperSalary==0 || input.AnnualSalary <= UpperSalary ))
             {
                 var grossIncome = input.AnnualSalary / 12;
@@ -38,7 +39,7 @@ namespace BYO.Domain
                 };
             }
             else
-                return _nextHandler.CalculateSalary(input);
+                return await _nextHandler.CalculateSalary(input);
         }
     }
     public class SalaryRateHandler : SalaryRateHandlerBase

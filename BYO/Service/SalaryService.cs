@@ -1,6 +1,7 @@
 ﻿using BYO.Domain;
 using BYO.Model;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace BYO.Service
     public interface ISalaryService
     {
         Task<IEnumerable<OutputModel>> GetSalaryDetails(IFormFile file);
+        IEnumerable<OutputModel> GetSalaryDetails(IEnumerable<InputModel> inputs);
     }
     public class SalaryService : ISalaryService
     {
@@ -27,7 +29,9 @@ namespace BYO.Service
             if (file == null || file.Length == 0) return salaryData;
             try
             {
-                salaryData = await GetSalaryData(file);
+                var inputs = await _fileReaderService.ReadInput(file);
+                var salaryRates = _salaryRateHandlersSetup.SetupChain();
+                salaryData = CalculateSalary(inputs, salaryRates);
             }
             catch (Exception)
             {
@@ -35,14 +39,23 @@ namespace BYO.Service
             }
             return salaryData;
         }
-        async Task<IEnumerable<OutputModel>> GetSalaryData(IFormFile file)
+
+        public IEnumerable<OutputModel> GetSalaryDetails(IEnumerable<InputModel> inputs)
         {
-            return CalculateSalary(await _fileReaderService.ReadInput(file), _salaryRateHandlersSetup.SetupChain());
+            IEnumerable<OutputModel> salaryData = null;
+            if (inputs == null) return salaryData;
+           
+            var salaryRates = _salaryRateHandlersSetup.SetupChain();
+            var salary = CalculateSalary(inputs, salaryRates);
+             return salary;
         }
-        IEnumerable<OutputModel> CalculateSalary(IEnumerable<InputModel> inputs, SalaryRateHandlers salaryRates)
+         IEnumerable<OutputModel> CalculateSalary(IEnumerable<InputModel> inputs, SalaryRateHandler salaryRate)
         {
             foreach (var input in inputs)
-                yield return (salaryRates.SalaryRateHandlerList.First().CalculateSalary(input));
+            {
+                var output = salaryRate.CalculateSalary(input);
+                yield return output.Result;
+            }
         }
     }
 }

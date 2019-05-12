@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using BYO.Model;
 using BYO.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +30,27 @@ namespace BYO.Controllers
                 try
                 {
                     var salaryDetail = await _salaryService.GetSalaryDetails(file);
+                    return Ok(new { salaryDetail });
+                }
+                catch (Exception)
+                {
+                    //Shot // Lof // throw
+                }
+
+            }
+            return BadRequest();
+        }
+        /// Action to post json
+        /// </summary>
+        /// <param name="fijsonle"></param>
+        [HttpPost]
+        public IActionResult Post(IEnumerable<InputModel> json)
+        {
+            if ((json == null || json.Count()==0)) return BadRequest();
+            {
+                try
+                {
+                    var salaryDetail = _salaryService.GetSalaryDetails(json);
                     return Ok(new { salaryDetail });
                 }
                 catch (Exception)
