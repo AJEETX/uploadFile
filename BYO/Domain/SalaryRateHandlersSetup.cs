@@ -20,6 +20,19 @@ namespace BYO.Domain
         }
         public SalaryRateHandlers SetupChain()
         {
+            SalaryRateHandlers rateHandlers = null;
+            try
+            {
+                rateHandlers = Chain();
+            }
+            catch
+            {
+                //Shout // Log //throw;
+            }
+            return rateHandlers;
+        }
+        SalaryRateHandlers Chain()
+        {
             var salaryRates = _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
             for (int i = 0; i < salaryRates.SalaryRateHandlerList.Count() - 1; i++)
 
