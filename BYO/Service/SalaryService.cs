@@ -33,8 +33,7 @@ namespace BYO.Service
             catch
             {
                 //shout // Log
-            }
-             return salaryData;
+            } return salaryData;
         }
     }
 }

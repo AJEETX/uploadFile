@@ -11,17 +11,15 @@ namespace BYO.Service
     {
         IConfigService _configService;
         static bool IsSalaryRatehandlerSet { get; set; } = false;
-        static SalaryRateHandler rateHandler = null;
+        static SalaryRateHandler salaryRateHandler = null;
         public SalaryRateHandlersService(IConfigService configService)
         {
             _configService = configService;
         }
         public SalaryRateHandler SalaryRateHandler
         {
-            get
-            {
-                if (!IsSalaryRatehandlerSet)
-                {
+            get{
+                if (!IsSalaryRatehandlerSet){
                     try
                     {
                         var salaryRateHandlers = _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
@@ -31,14 +29,13 @@ namespace BYO.Service
 
                         IsSalaryRatehandlerSet = true;
 
-                        rateHandler = salaryRateHandlers.SalaryRateHandlerList.First();
+                        salaryRateHandler = salaryRateHandlers.SalaryRateHandlerList.First();
                     }
                     catch
                     {
                         //Shout // Log //throw;
                     }
-                }
-                return rateHandler;
+                } return salaryRateHandler;
             }
         }
     }

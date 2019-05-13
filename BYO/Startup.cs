@@ -18,12 +18,11 @@ namespace BYO
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IConfigService, ConfigService>();
-            services.AddScoped<ISalaryRateHandlersService, SalaryRateHandlersService>();
-            services.AddScoped<ISalaryService, SalaryService>();
-            services.AddScoped<ISalaryCalculatorService, SalaryCalculatorService>();
-            services.AddSwaggerGen(config =>
-            {
+            services.AddScoped<IConfigService, ConfigService>()
+                .AddScoped<ISalaryRateHandlersService, SalaryRateHandlersService>()
+                .AddScoped<ISalaryService, SalaryService>()
+                .AddScoped<ISalaryCalculatorService, SalaryCalculatorService>();
+            services.AddSwaggerGen(config => {
                 config.SwaggerDoc("v1", new Info { Title = "Azy API", Version = "V1" });
             });
 
@@ -32,8 +31,7 @@ namespace BYO
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseHttpsRedirection();
-            app.UseMvc().UseSwagger().UseSwaggerUI(config =>
-            {
+            app.UseMvc().UseSwagger().UseSwaggerUI(config => {
                 config.SwaggerEndpoint("/swagger/v1/swagger.json", "Azy API");
             });
         }

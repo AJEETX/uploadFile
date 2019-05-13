@@ -16,7 +16,7 @@ namespace BYO.Domain
         {
             _nextHandler = nextHandler;
         }
-        public async Task<OutputModel> CalculateSalary(InputModel input)
+        public OutputModel CalculateSalary(InputModel input)
         {
             if (input == null || input.AnnualSalary==0) return null;
 
@@ -30,13 +30,8 @@ namespace BYO.Domain
                      Incometax=Math.Round(incometax,0), NetIncome=Math.Round(grossIncome-incometax,0), Super =Math.Round( grossIncome*(input.SuperRate/100))
                 };
             }
-            else if(_nextHandler!=null)
-
-                return await _nextHandler.CalculateSalary(input);
-            else
-            {
-                return  null;
-            }
+            else if(_nextHandler!=null) return _nextHandler.CalculateSalary(input);
+            else return  null; 
         }
     }
     public class SalaryRateHandler : SalaryRateHandlerBase
