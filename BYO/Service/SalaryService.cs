@@ -24,7 +24,7 @@ namespace BYO.Service
             if (inputs == null || inputs.Count()==0) return salaryData;
             try
             {
-                var salaryRateHandler = _salaryRateHandlersService.SalaryRateHandler;
+                var salaryRateHandler = _salaryRateHandlersService.FirstSalaryRateHandler;
 
                 if (salaryRateHandler == null) return salaryData;
 
