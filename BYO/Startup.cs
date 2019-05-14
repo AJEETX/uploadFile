@@ -1,10 +1,13 @@
-﻿using BYO.Service;
+﻿using Swashbuckle.AspNetCore.Examples;
+using BYO.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using BYO.Model;
+using System.Collections.Generic;
 
 namespace BYO
 {
@@ -34,6 +37,17 @@ namespace BYO
             app.UseMvc().UseSwagger().UseSwaggerUI(config => {
                 config.SwaggerEndpoint("/swagger/v1/swagger.json", "Azy API");
             });
+        }
+    }
+    public class PayslipRequestExample : IExamplesProvider
+    {
+        public object GetExamples()
+        {
+            var sampleEmployees = new List<InputModel>();
+            sampleEmployees.Add(new InputModel { FirstName = "David", LastName = "Rudd", AnnualSalary = 60050, SuperRate = 9, PaymentStartDate = "01 March - 31 March" });
+            sampleEmployees.Add(new InputModel { FirstName = "Ryan", LastName = "Chen", AnnualSalary = 120000, SuperRate = 10, PaymentStartDate = "01 March - 31 March" });
+
+            return sampleEmployees;
         }
     }
 }

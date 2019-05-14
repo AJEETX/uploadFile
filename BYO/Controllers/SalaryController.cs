@@ -3,6 +3,7 @@ using System.Linq;
 using BYO.Model;
 using BYO.Service;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Examples;
 
 namespace BYO.Controllers
 {
@@ -20,6 +21,7 @@ namespace BYO.Controllers
         /// </summary>
         /// <param name="json"></param>
         [HttpPost]
+        [SwaggerRequestExample(typeof(IEnumerable<InputModel>), typeof(PayslipRequestExample))]
         public IActionResult Post(IEnumerable<InputModel> json)
         {
             if ((json == null || json.Count()==0)) return BadRequest();

@@ -29,14 +29,14 @@ namespace BYO.Service
                  return salaryRateHandler;
             }
         }
-        SalaryRateHandler GetFirstHandler()
+        void GetFirstHandler()
         {
             var salaryRateHandlers = _configService.GetSection<SalaryRateHandlers>(nameof(SalaryRateHandlers));
             for (int i = 0; i < salaryRateHandlers.SalaryRateHandlerList.Count() - 1; i++)
 
                 salaryRateHandlers.SalaryRateHandlerList.ElementAt(i).SetNextHandler(salaryRateHandlers.SalaryRateHandlerList.ElementAt(i + 1));
 
-            return salaryRateHandlers.SalaryRateHandlerList.First();
+            salaryRateHandler= salaryRateHandlers.SalaryRateHandlerList.First();
         }
     }
 }
